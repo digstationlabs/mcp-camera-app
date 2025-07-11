@@ -1,0 +1,99 @@
+{
+  "name": "mcp-camera-app",
+  "version": "1.0.0",
+  "description": "Standalone MCP Camera App - Access 10,000+ cameras across the US",
+  "main": "src/cli/index.js",
+  "type": "module",
+  "bin": {
+    "mcp-camera": "./src/cli/index.js",
+    "mcp-camera-gui": "./src/gui/main.js"
+  },
+  "scripts": {
+    "start": "node src/cli/index.js",
+    "start:gui": "electron src/gui/main.js",
+    "dev": "node src/cli/index.js --dev",
+    "build": "npm run build:cli && npm run build:gui",
+    "build:cli": "pkg src/cli/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --out-path dist/cli/",
+    "build:gui": "electron-builder",
+    "build:all": "npm run build && npm run package",
+    "package": "npm run package:win && npm run package:mac && npm run package:linux",
+    "package:win": "electron-builder --win",
+    "package:mac": "electron-builder --mac",
+    "package:linux": "electron-builder --linux",
+    "test": "mocha test/**/*.test.js",
+    "lint": "eslint src/",
+    "format": "prettier --write src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digstationlabs/mcp-camera-app.git"
+  },
+  "keywords": [
+    "camera",
+    "webcam",
+    "weather",
+    "national-parks",
+    "faa",
+    "cli",
+    "gui",
+    "standalone",
+    "mcp"
+  ],
+  "author": "MCP Camera Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^11.0.0",
+    "inquirer": "^9.2.0",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.0",
+    "node-fetch": "^3.3.2",
+    "fs-extra": "^11.1.0",
+    "blessed": "^0.1.81",
+    "open": "^9.1.0",
+    "express": "^4.18.0",
+    "electron": "^28.0.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1",
+    "electron-builder": "^24.0.0",
+    "mocha": "^10.0.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0"
+  },
+  "pkg": {
+    "targets": [
+      "node18-win-x64",
+      "node18-macos-x64", 
+      "node18-linux-x64"
+    ],
+    "outputPath": "dist/cli/",
+    "assets": [
+      "src/core/**/*",
+      "assets/**/*"
+    ]
+  },
+  "build": {
+    "appId": "com.mcpcamera.app",
+    "productName": "MCP Camera",
+    "directories": {
+      "output": "dist/gui/"
+    },
+    "files": [
+      "src/gui/**/*",
+      "src/core/**/*",
+      "assets/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.photography"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
